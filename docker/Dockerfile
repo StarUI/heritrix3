@@ -2,7 +2,7 @@ ARG java=25
 
 FROM eclipse-temurin:${java}
 
-ARG version="3.10.1"
+ARG version="3.14.1"
 ARG user="heritrix"
 ARG userid=1001
 
