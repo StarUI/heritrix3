@@ -34,7 +34,7 @@ RUN \
     chmod u+x heritrix/bin/heritrix && \
     chown -R $user:$user /opt/heritrix
 
-ADD entrypoint.sh /opt/entrypoint.sh
+COPY entrypoint.sh /opt/entrypoint.sh
 RUN chmod +x /opt/entrypoint.sh && \
     chown $user:$user /opt/entrypoint.sh
 
