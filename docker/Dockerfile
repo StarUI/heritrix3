@@ -2,7 +2,7 @@ ARG java=25
 
 FROM eclipse-temurin:${java}
 
-ARG version="3.10.1"
+ARG version="3.14.1"
 ARG user="heritrix"
 ARG userid=1001
 
@@ -34,7 +34,7 @@ RUN \
     chmod u+x heritrix/bin/heritrix && \
     chown -R $user:$user /opt/heritrix
 
-ADD entrypoint.sh /opt/entrypoint.sh
+COPY entrypoint.sh /opt/entrypoint.sh
 RUN chmod +x /opt/entrypoint.sh && \
     chown $user:$user /opt/entrypoint.sh
 
