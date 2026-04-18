@@ -4,7 +4,7 @@
 
 [Full Changelog](https://github.com/internetarchive/heritrix3/compare/3.14.1...HEAD)
 
-## [3.14.1](https://github.com/internetarchive/heritrix3/releases/tag/3.14.1)  (2025-04-06)
+## [3.14.1](https://github.com/internetarchive/heritrix3/releases/tag/3.14.1)  (2026-04-06)
 
 [Download distribution zip](https://repo1.maven.org/maven2/org/archive/heritrix/heritrix/3.14.1/heritrix-3.14.1-dist.zip) (or [tar.gz](https://repo1.maven.org/maven2/org/archive/heritrix/heritrix/3.14.1/heritrix-3.14.1-dist.tar.gz))
 
@@ -40,7 +40,7 @@
 * **pdfbox**: 3.0.6 → 3.0.7
 * **spring** (spring-beans, spring-context, spring-core, spring-expression): 7.0.3 → 7.0.6
 
-## [3.14.0](https://github.com/internetarchive/heritrix3/releases/tag/3.14.0)  (2025-02-06)
+## [3.14.0](https://github.com/internetarchive/heritrix3/releases/tag/3.14.0)  (2026-02-06)
 
 [Download distribution zip](https://repo1.maven.org/maven2/org/archive/heritrix/heritrix/3.14.0/heritrix-3.14.0-dist.zip) (or [tar.gz](https://repo1.maven.org/maven2/org/archive/heritrix/heritrix/3.14.0/heritrix-3.14.0-dist.tar.gz))
 
