@@ -97,6 +97,8 @@ class BrowserProcessorTest {
 
             logger.log(DEBUG, "Subrequests: {0}", subrequests);
         } finally {
+            fetcher.getKeyedProperties().remove("httpProxyHost");
+            fetcher.getKeyedProperties().remove("httpProxyPort");
             proxyServer.stop();
         }
     }
