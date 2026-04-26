@@ -58,6 +58,7 @@ public class EngineApplication extends Application {
         this.engine = engine;
         getMetadataService().addExtension("log", MediaType.TEXT_PLAIN );
         getMetadataService().addExtension("cxml", MediaType.APPLICATION_XML );
+        getMetadataService().addExtension("groovy", MediaType.TEXT_PLAIN);
         setStatusService(new EngineStatusService());
         templateConfiguration = new Configuration();
         templateConfiguration.setClassForTemplateLoading(getClass(), "");

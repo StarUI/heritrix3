@@ -60,7 +60,7 @@ import freemarker.template.TemplateException;
  */
 public class JobResource extends BaseResource {
     public static final IOFileFilter EDIT_FILTER = FileUtils
-            .getRegexFileFilter(".*\\.((c?xml)|(txt))$");
+            .getRegexFileFilter(".*\\.((c?xml)|(txt)|(groovy))$");
 
     @SuppressWarnings("unused")
     private static final Logger logger = Logger.getLogger(JobResource.class
