@@ -31,6 +31,7 @@ public class EngineModel extends LinkedHashMap<String, Object> {
         this.put("availableActions", actions);
         
         this.put("jobs", makeJobList(engine, urlBaseRef));
+        this.put("profiles", engine.getProfileNames());
     }
 
 	private List<Map<String, Object>> makeJobList(Engine engine,

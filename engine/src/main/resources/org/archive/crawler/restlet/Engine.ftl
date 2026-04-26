@@ -110,6 +110,11 @@
 				<form method='POST' style="margin:0">
 					<h5 style="margin-bottom:0">create new job</h5>
 					<input style="display:inline;margin:0;width:50%" name='createpath' type="text" placeholder="myJob"/>
+					<select name="profile" style="display:inline; margin:0; width:auto; vertical-align:middle">
+						<#list engine.profiles as profile>
+						<option value="${profile?html}">${profile?html}</option>
+						</#list>
+					</select>
 					<input class="small inline button" type='submit' name='action' value='create'>
 				</form>
 			</div>

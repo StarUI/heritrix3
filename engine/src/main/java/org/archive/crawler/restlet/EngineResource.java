@@ -110,6 +110,7 @@ public class EngineResource extends BaseResource {
             }
         } else if ("create".equals(action)) {
         	String path = form.getFirstValue("createpath");
+            String profile = form.getFirstValue("profile");
         	if (path==null) {
                 // protect against null path
         		Flash.addFlash(getResponse(), "Cannot create <i>null</i> path.", 
@@ -130,14 +131,19 @@ public class EngineResource extends BaseResource {
                     Flash.addFlash(getResponse(), "Directory exists: "
                             + "<i>" + path + "</i>", Flash.Kind.NACK);
         	    } else {
-        	        if (getEngine().createNewJobWithDefaults(newJobDir)) {
-        	            Flash.addFlash(getResponse(), "Created new crawl job: "
-        	                    + "<i>" + path + "</i>", Flash.Kind.ACK);
-        	            getEngine().findJobConfigs();
-        	        } else {
-                        Flash.addFlash(getResponse(), "Failed to create new job: "
-                                + "<i>" + path + "</i>", Flash.Kind.NACK);
-        	        }
+                    try {
+                        if (getEngine().createNewJobWithDefaults(newJobDir, profile)) {
+                            Flash.addFlash(getResponse(), "Created new crawl job: "
+                                                          + "<i>" + path + "</i>", Flash.Kind.ACK);
+                            getEngine().findJobConfigs();
+                        } else {
+                            Flash.addFlash(getResponse(), "Failed to create new job: "
+                                                          + "<i>" + path + "</i>", Flash.Kind.NACK);
+                        }
+                    } catch (IllegalArgumentException e) {
+                        Flash.addFlash(getResponse(), "Cannot create job from profile: "
+                                                      + "<i>" + profile + "</i>", Flash.Kind.NACK);
+                    }
         	    }
         	}
         } else if ("exit java process".equals(action)) { 

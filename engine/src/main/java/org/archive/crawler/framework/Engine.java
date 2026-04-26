@@ -23,14 +23,12 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.nio.file.Files;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.archive.util.ArchiveUtils;
 
@@ -57,9 +55,13 @@ public class Engine {
     /** map of job short names -&gt; CrawlJob instances */ 
     protected HashMap<String,CrawlJob> jobConfigs = new HashMap<String,CrawlJob>();
 
-    protected String profileCxmlPath = 
-        "/org/archive/crawler/restlet/profile-crawler-beans.cxml";
-    
+    /** map of built-in profiles names to resource paths */
+    protected final Map<String, String> builtinProfiles = new LinkedHashMap<>();
+    {
+        builtinProfiles.put("Defaults (XML)", "/org/archive/crawler/restlet/profile-crawler-beans.cxml");
+        builtinProfiles.put("Defaults (Groovy)", "/org/archive/crawler/restlet/profile-crawler-beans.groovy");
+    }
+
     public Engine(File jobsDir) {
         this.jobsDir = jobsDir;
         
@@ -338,29 +340,66 @@ public class Engine {
     }
 
     /**
-     * @return InputStream resource from defined profile CXML path
+     * Lists the available profile names, including both built-in and user-created profiles.
      */
-    protected InputStream getProfileCxmlResource() {
-        return getClass().getResourceAsStream(profileCxmlPath);
+    public List<String> getProfileNames() {
+        List<String> profiles = new ArrayList<>();
+        profiles.addAll(builtinProfiles.keySet());
+        jobConfigs.entrySet().stream()
+                .filter(entry -> entry.getValue().isProfile()
+                                 && !builtinProfiles.containsKey(entry.getKey()))
+                .sorted(Map.Entry.comparingByKey())
+                .forEach(entry -> profiles.add(entry.getKey()));
+        return profiles;
     }
-    
+
     /**
      * create a new job dir and copy profile CXML into as non-profile CXML
      * @param newJobDir new job directory
      */
 	public boolean createNewJobWithDefaults(File newJobDir) {
+        return createNewJobWithDefaults(newJobDir, null);
+    }
+
+    /**
+     * create a new job dir from the selected profile
+     * @param newJobDir new job directory
+     * @param profile selected built-in profile id or job profile id
+     */
+    public boolean createNewJobWithDefaults(File newJobDir, String profile) {
+        if (profile == null || profile.isBlank()) {
+            profile = builtinProfiles.keySet().iterator().next();
+        }
+        // check for job profile first so the user can choose to override the built-in profiles
+        CrawlJob source = getJob(profile);
+        if (source != null) {
+            if (!source.isProfile()) {
+                throw new IllegalArgumentException("Not a profile: " + profile);
+            }
+            try {
+                copy(source, newJobDir, false);
+                return true;
+            } catch (IOException e) {
+                LOGGER.log(Level.SEVERE, "failed to create new job: " + newJobDir.getAbsolutePath());
+                return false;
+            }
+        }
+
+        String resource = builtinProfiles.get(profile);
+        if (resource == null) {
+            throw new IllegalArgumentException("Unknown profile: " + profile);
+        }
+
         try {
-            // get crawler-beans template into string
-            InputStream inStream = getProfileCxmlResource();
-            String defaultCxmlStr;
-            defaultCxmlStr = IOUtils.toString(inStream);
-            inStream.close();
-
-            // write default crawler-beans string to new job dir
-            org.archive.util.FileUtils.ensureWriteableDirectory(newJobDir);
-            File newJobCxml = new File(newJobDir,"crawler-beans.cxml");
-            FileUtils.writeStringToFile(newJobCxml, defaultCxmlStr);
-
+            try (InputStream stream = getClass().getResourceAsStream(resource)) {
+                if (stream == null) {
+                    throw new IOException("profile resource not found: " + profile);
+                }
+                org.archive.util.FileUtils.ensureWriteableDirectory(newJobDir);
+                String filename = resource.endsWith(".groovy") ? "crawler-beans.groovy" : "crawler-beans.cxml";
+                File newJobCxml = new File(newJobDir, filename);
+                Files.copy(stream, newJobCxml.toPath());
+            }
             return true;
 
         } catch (IOException e) {
