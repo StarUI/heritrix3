@@ -140,7 +140,9 @@ public class Engine {
         }
         File[] candidateConfigs = dir.listFiles(new FilenameFilter() {
             public boolean accept(File dir, String name) {
-                return name.endsWith(".cxml") || name.equals("crawler-beans.groovy");
+                return name.endsWith(".cxml") ||
+                       name.equals("crawler-beans.groovy") ||
+                       name.equals("profile-crawler-beans.groovy");
             }});
         if(candidateConfigs==null || candidateConfigs.length == 0) {
             // no CXML file found!

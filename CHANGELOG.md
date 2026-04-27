@@ -8,6 +8,10 @@
 
 * **Profile selector:** You can now select a profile from a dropdown list when creating a new job.
 
+### Bug fixes
+
+* **Groovy profiles:** Fixed discovery of job directories containing `profile-crawler-beans.groovy`
+
 ## [3.14.1](https://github.com/internetarchive/heritrix3/releases/tag/3.14.1)  (2026-04-06)
 
 [Download distribution zip](https://repo1.maven.org/maven2/org/archive/heritrix/heritrix/3.14.1/heritrix-3.14.1-dist.zip) (or [tar.gz](https://repo1.maven.org/maven2/org/archive/heritrix/heritrix/3.14.1/heritrix-3.14.1-dist.tar.gz))
