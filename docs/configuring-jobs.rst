@@ -4,8 +4,21 @@ Configuring Crawl Jobs
 Basic Job Settings
 ------------------
 
-Crawl settings are configured by editing a job's crawler-beans.cxml file.  Each job has a ``crawler-beans.cxml`` file
-that contains the Spring configuration for the job.
+Crawl settings are configured by editing the job's primary configuration file, usually ``crawler-beans.cxml`` or
+``crawler-beans.groovy``.
+
+Profiles
+~~~~~~~~
+
+A profile is a non-launchable job template. To create one from the web interface, open an existing job, choose
+``Copy Job``, enter the new profile name, check ``as profile``, and submit the form. Heritrix treats jobs
+whose primary configuration filename starts with ``profile-`` as profiles. They can be built for validation, but not
+launched directly.
+
+Profiles appear in the create job profile selector by their job name. Choosing one creates a new launchable job
+by copying the profile and removing the ``profile-`` prefix from the primary configuration filename.
+
+The built-in defaults can be overridden by creating a profile with the same name as the built-in profile.
 
 Crawl Limits
 ~~~~~~~~~~~~

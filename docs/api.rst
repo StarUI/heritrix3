@@ -59,6 +59,11 @@ Get Engine Status
             <key>myjob</key>
           </value>
         </jobs>
+        <profiles>
+          <value>Defaults (XML)</value>
+          <value>Defaults (Groovy)</value>
+          <value>myprofile</value>
+        </profiles>
       </engine>
 
    **JSON Example:**
@@ -104,17 +109,28 @@ Create New Job
 
 .. http:post:: https://(heritrixhost):8443/engine [action=create]
 
-   Creates a new crawl job. It uses the default configuration provided
-   by the profile-defaults profile.
-
+   Creates a new crawl job from the selected profile. If no profile is
+   supplied, ``Defaults (XML)`` is used. Built-in profiles include
+   ``Defaults (XML)`` and ``Defaults (Groovy)``. Existing job profiles may
+   also be selected by passing the profile job's short name.
    :form action: must be ``create``
    :form createpath: the name of the new job
+   :form profile: optional profile name. Existing profiles use their job
+      short names.
 
    **HTML Example:**
 
    .. code:: bash
 
-      curl -v -d "createpath=myjob&action=create" -k -u admin:admin --anyauth --location \
+       curl -v -d "createpath=myjob&action=create" -k -u admin:admin --anyauth --location \
+        https://localhost:8443/engine
+
+   To create a job from the Groovy defaults:
+
+   .. code:: bash
+
+      curl -v --data-urlencode "createpath=mygroovyjob" --data-urlencode "action=create" \
+        --data-urlencode "profile=Defaults (Groovy)" -k -u admin:admin --anyauth --location \
         https://localhost:8443/engine
 
    **XML Example:**
@@ -583,9 +599,10 @@ Copy Job
 
 .. http:post:: https://(heritrixhost):8443/engine/job/(jobname) [copyTo]
 
-   Copies an existing job configuration to a new job configuration. If the "as
-   profile" checkbox is selected, than the job configuration is copied as a
-   non-runnable profile configuration.
+   Copies an existing job configuration to a new job configuration. If the
+   ``asProfile`` option is submitted with value ``on``, then the copy is a
+   non-runnable profile. Profiles are listed as options when creating new
+   jobs, and profiles with built-in names override the built-ins.
 
    :form copyTo: the name of the new job or profile configuration
 
