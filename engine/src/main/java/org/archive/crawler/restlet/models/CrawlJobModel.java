@@ -30,7 +30,7 @@ public class CrawlJobModel extends LinkedHashMap<String, Object> implements Seri
 	private static final String LATEST_WARCS = "/latest/warcs";
     private CrawlJob crawlJob;
     public static final IOFileFilter EDIT_FILTER = FileUtils
-            .getRegexFileFilter(".*\\.((c?xml)|(txt))$");
+            .getRegexFileFilter(".*\\.((c?xml)|(txt)|(groovy))$");
     
     public CrawlJobModel(CrawlJob crawlJob, String urlBaseRef){
         super();
