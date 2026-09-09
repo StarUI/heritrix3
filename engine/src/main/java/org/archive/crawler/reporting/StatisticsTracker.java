@@ -836,9 +836,9 @@ public class StatisticsTracker
         if (getTrackSources() && curi.getData().containsKey(A_SOURCE_TAG)) {
             boolean tally = false;
             SourceTagsReport str = getReport(SourceTagsReport.class);
-            if (str.isIncludeResCode()) {
+            if (str != null && str.isIncludeResCode()) {
                 saveSourceStats(curi.getSourceTag(), sc.getHostFor(curi.getUURI()).getHostName(), String.valueOf(curi.getFetchStatus()));
-                tally = true;
+                tally = isCrawlOK;
             }
             if (isCrawlOK) {
                 saveSourceStats(curi.getSourceTag(), sc.getHostFor(curi.getUURI()).getHostName());
